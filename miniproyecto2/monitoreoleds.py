@@ -1,25 +1,25 @@
 import time
-from gpiozero import LED, Buzzer
+from gpiozero import LED, PWMOutputDevice
 import re
 
 # Configuración de pines para LEDs de cada variable
 # Temperatura
-led_temp_bajo = LED(2)     # LED azul
-led_temp_medio = LED(3)    # LED verde
-led_temp_alto = LED(4)     # LED rojo
+led_temp_bajo = LED(13)     # LED azul
+led_temp_medio = LED(26)    # LED verde
+led_temp_alto = LED(19)     # LED rojo
 
 # Humedad
-led_hum_bajo = LED(17)     # LED azul
-led_hum_medio = LED(27)    # LED verde
-led_hum_alto = LED(22)     # LED rojo
+led_hum_bajo = LED(27)     # LED azul
+led_hum_medio = LED(18)    # LED verde
+led_hum_alto = LED(17)     # LED rojo
 
 # Distancia
-led_dist_bajo = LED(10)    # LED azul
-led_dist_medio = LED(9)    # LED verde
-led_dist_alto = LED(11)    # LED rojo
+led_dist_bajo = LED(23)    # LED azul
+led_dist_medio = LED(24)    # LED verde
+led_dist_alto = LED(22)    # LED rojo
 
 # Buzzer
-buzzer = Buzzer(5)
+buzzer = PWMOutputDevice(6)
 
 # Umbrales para cada variable
 TEMP_BAJA, TEMP_MEDIA, TEMP_ALTA = 15, 25, 35
@@ -66,39 +66,71 @@ def actualizar_leds_y_buzzer(promedios):
     led_dist_medio.off()
     led_dist_alto.off()
     buzzer.off()
+    time.sleep(3)
 
     # Temperatura
     if promedios["Temperature"] < TEMP_BAJA:
         led_temp_bajo.on()
-        buzzer.beep(on_time=0.1, off_time=0.2, n=1)
+        buzzer.frequency = 250
+        buzzer.value = 0.5
+        time.sleep(2)
+        buzzer.value = 0
     elif promedios["Temperature"] < TEMP_MEDIA:
         led_temp_medio.on()
-        buzzer.beep(on_time=0.1, off_time=0.2, n=2)
+        buzzer.frequency = 250
+        buzzer.value = 0.5
+        time.sleep(1)
+        buzzer.value = 0
     else:
         led_temp_alto.on()
-        buzzer.beep(on_time=0.1, off_time=0.2, n=3)
+        buzzer.frequency = 250
+        buzzer.value = 0.5
+        time.sleep(1)
+        buzzer.value = 0
+    
+    time.sleep(3)
 
     # Humedad
     if promedios["Humidity"] < HUM_BAJA:
         led_hum_bajo.on()
-        buzzer.beep(on_time=0.2, off_time=0.3, n=1)
+        buzzer.frequency = 250
+        buzzer.value = 0.5
+        time.sleep(1)
+        buzzer.value = 0
     elif promedios["Humidity"] < HUM_MEDIA:
         led_hum_medio.on()
-        buzzer.beep(on_time=0.2, off_time=0.3, n=2)
+        buzzer.frequency = 250
+        buzzer.value = 0.5
+        time.sleep(1)
+        buzzer.value = 0
     else:
         led_hum_alto.on()
-        buzzer.beep(on_time=0.2, off_time=0.3, n=3)
+        buzzer.frequency = 250
+        buzzer.value = 0.5
+        time.sleep(1)
+        buzzer.value = 0
+    
+    time.sleep(3)
 
     # Distancia
     if promedios["Distance"] < DIST_CORTA:
         led_dist_bajo.on()
-        buzzer.beep(on_time=0.3, off_time=0.4, n=1)
+        buzzer.frequency = 250
+        buzzer.value = 0.5
+        time.sleep(1)
+        buzzer.value = 0
     elif promedios["Distance"] < DIST_MEDIA:
         led_dist_medio.on()
-        buzzer.beep(on_time=0.3, off_time=0.4, n=2)
+        buzzer.frequency = 250
+        buzzer.value = 0.5
+        time.sleep(1)
+        buzzer.value = 0
     else:
         led_dist_alto.on()
-        buzzer.beep(on_time=0.3, off_time=0.4, n=3)
+        buzzer.frequency = 250
+        buzzer.value = 0.5
+        time.sleep(1)
+        buzzer.value = 0
 
 
 def main():
@@ -109,8 +141,7 @@ def main():
             actualizar_leds_y_buzzer(promedios)
 
         # Esperar antes de la próxima lectura
-        time.sleep(10)
+        time.sleep(5)
 
 
-if __name__ == "__main__":
-    main()
+main()                                                                                                                                                                                                                                     
